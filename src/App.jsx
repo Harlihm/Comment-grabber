@@ -11,8 +11,17 @@ const App = () => {
         }
       };
 
+      const params = new URLSearchParams({
+        identifier: 'YOUR_IDENTIFIER_HERE',
+        type: 'url', // or 'hash' depending on your requirement
+        reply_depth: 2,
+        include_chronological_parent_casts: false
+      });
+
+      const url = `https://api.neynar.com/v2/farcaster/cast/conversation?${params}`;
+
       try {
-        const response = await fetch('https://api.neynar.com/v2/farcaster/cast/conversation?type=url&reply_depth=2&include_chronological_parent_casts=false', options);
+        const response = await fetch(url, options);
         const data = await response.json();
         console.log(data);
       } catch (error) {
@@ -22,8 +31,6 @@ const App = () => {
 
     fetchData();
   }, []);
-
-  
 
   return (
     <div>
