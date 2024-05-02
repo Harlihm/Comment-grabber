@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import './App.css'
+
 
 const App = () => {
   const [identifier, setIdentifier] = useState('');
+  const [replies, setReplies] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +28,9 @@ const App = () => {
       try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log(data);
+        setReplies(data.conversation.cast.direct_replies);
+        console.log(data.conversation.cast.direct_replies);
+
       } catch (error) {
         console.error(error);
       }
@@ -38,10 +43,31 @@ const App = () => {
     setIdentifier(event.target.value);
   };
 
+  // const getRandomUsername = () => {
+  //   if (replies.length === 0) return '';
+  //   const randomIndex = Math.floor(Math.random() * replies.length);
+  //   return replies[randomIndex].author.username;
+  // };
+
+
   return (
-    <div>
-      <h1>Fetching Data from API</h1>
+    <div className='thecode'>
+      <h1>Comment Grabber</h1>
       <input type="text" value={identifier} onChange={handleInputChange} placeholder="Enter Identifier" />
+
+      <div className="replies">
+      <ul>
+        {replies.map((reply, index) => (
+          <li key={index}>{`${reply.author.username} ---> ${reply.text}`}
+          </li>
+
+        ))}
+      </ul> 
+         {/* <ul>
+        <li>{getRandomUsername()}</li>
+      </ul> */}
+      
+      </div>
     </div>
   );
 };
